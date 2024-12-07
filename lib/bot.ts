@@ -38,11 +38,11 @@ bot.on("message", async (ctx) => {
     // Инициализация userState для пользователя, если она ещё не создана
     if (!userState[userId]) {
         userState[userId] = {};
-        await ctx.reply("О чём вы хотите поболтать? напишите свои хобби через запятую.");
     }
 
     // Если хобби ещё не сохранено, спрашиваем о нём
     if (!userState[userId].hobby) {
+        await ctx.reply("О чём вы хотите поболтать? напишите свои хобби через запятую.");
         userState[userId].hobby = ctx.message.text; // Сохраняем введенное хобби
         await ctx.reply("В каком районе вам было бы удобно встречаться?");
     } 
