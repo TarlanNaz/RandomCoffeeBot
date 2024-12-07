@@ -2,9 +2,9 @@
   "name": "my-project",
   "version": "1.0.0",
   "description": "My TypeScript project",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "main.ts",
     "build": "tsc"
   },
   "devDependencies": {
