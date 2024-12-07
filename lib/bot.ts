@@ -50,18 +50,17 @@ bot.on("message", async (ctx) => {
     const userId = ctx.from.id.toString();  
 
     if (users[userId]?.hobby === '') {  
-        userState[userId].hobby = ctx.message.text; 
-        await ctx.reply("О чём вы хотели бы побольше рассказать? Напишите свои интересы через запятую.");
-    } else if (userState[userId]?.place === '') {  
+        await ctx.reply("О чём вы хотели бы поболжиться? Напишите свои интересы через запятую.");  
+        userState[userId].hobby = ctx.message.text;  
+    } else if (userState[userId]?.place === '') { 
+        await ctx.reply("В каком районе вам было бы удобно встречаться?"); 
         userState[userId].place = ctx.message.text;  
-        await ctx.reply("В каком районе вам было бы удобно встречаться?");  
     } else if (userState[userId]?.cafe === '') {  
-        userState[userId].cafe = ctx.message.text;  
         await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");  
+        userState[userId].cafe = ctx.message.text;  
     } else if (userState[userId]?.time === '') {  
-        userState[userId].time = ctx.message.text;  
         await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");  
-    }  
+        userState[userId].time = ctx.message.text;  
 
         // Сохраняем информацию о пользователе  
         users[userId] = {   
