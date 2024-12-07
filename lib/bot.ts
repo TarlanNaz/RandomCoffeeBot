@@ -10,6 +10,7 @@ const users: { [userId: string]: { hobby: string; place: string; cafe: string; t
 bot.command("start", (ctx) => {  
     ctx.reply("Добро пожаловать! Чтобы начать регистрацию, введите /register.");  
 });  
+
  
 bot.command("register", (ctx) => {  
     const userId = ctx.from.id.toString();  
