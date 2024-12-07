@@ -135,10 +135,8 @@ bot.on("message:text", async (ctx) => {
             await bot.api.sendMessage(otherUserId, `Пользователь ${userId} согласен на встречу! Договоритесь о времени и месте.`); 
             await bot.api.sendMessage(userId, `Пользователь ${otherUserId} согласен на встречу! Договоритесь о времени и месте.`); 
             await ctx.reply("Отлично! Договоритесь о времени и месте с другим пользователем.");  
-            await setTimeout(() => {bot.api.sendMessage(assessment(state,userId)}, 1000);
-                
-              await setTimeout(() => {
-                bot.api.sendMessage(assessment(otherUserId,otherUserId)}, 1000);
+            await setTimeout(() => bot.api.sendMessage(assessment(state,userId)), 1000);
+            await  setTimeout(() => bot.api.sendMessage(assessment(otherUserId,otherUserId)), 1000);
 
         } else if (ctx.message.text.toLowerCase() === "нет") {  
             await bot.api.sendMessage(otherUserId, `Пользователь ${userId} не заинтересован в встрече.`);   
