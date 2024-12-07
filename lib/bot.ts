@@ -32,56 +32,44 @@ bot.command("start", (ctx) => {
     ctx.reply("Добро пожаловать! Чтобы начать регистрацию, введите /register.");  
 });  
 
-bot.command("register", (ctx) => {  
-    bot.on("message", async (ctx) => {
-        const userId = ctx.from.id.toString();
+bot.on("message", async (ctx) => {
+    const userId = ctx.from.id.toString();
+    
+    // Инициализация userState, если она ещё не создана
+    if (!userState[userId]) {
+        userState[userId] = {};
+    }
+
+    // Проверка и сохранение хобби
+    if (!userState[userId].hobby) {
+        userState[userId].hobby = ctx.message.text;
+        await ctx.reply("В каком районе вам было бы удобно встречаться?");
+    } else if (!userState[userId].place) {
+        userState[userId].place = ctx.message.text;
+        await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");
+    } else if (!userState[userId].cafe) {
+        userState[userId].cafe = ctx.message.text;
+        await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");
+    } else if (!userState[userId].time) {
+        userState[userId].time = ctx.message.text;
+
+        // Сохраняем информацию о пользователе
+        users[userId] = {
+            hobby: userState[userId].hobby,
+            place: userState[userId].place,
+            cafe: userState[userId].cafe,
+            time: userState[userId].time
+        };
+
+        // Подтверждение данных
+        await ctx.reply(`Спасибо за регистрацию! Вот ваши данные:\n- Интересы: ${users[userId].hobby}\n- Район: ${users[userId].place}\n- Кафе: ${users[userId].cafe}\n- Время: ${users[userId].time}`);
         
-        // Инициализация userState, если она ещё не создана
-        if (!userState[userId]) {
-            userState[userId] = {};
-        }
-    
-        // Проверка и сохранение хобби
-        if (!userState[userId].hobby) {
-            userState[userId].hobby = ctx.message.text;
-            await ctx.reply("В каком районе вам было бы удобно встречаться?");
-        } else if (!userState[userId].place) {
-            userState[userId].place = ctx.message.text;
-            await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");
-        } else if (!userState[userId].cafe) {
-            userState[userId].cafe = ctx.message.text;
-            await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");
-        } else if (!userState[userId].time) {
-            userState[userId].time = ctx.message.text;
-    
-            // Сохраняем информацию о пользователе
-            users[userId] = {
-                hobby: userState[userId].hobby,
-                place: userState[userId].place,
-                cafe: userState[userId].cafe,
-                time: userState[userId].time
-            };
-    
-            // Подтверждение данных
-            await ctx.reply(`Спасибо за регистрацию! Вот ваши данные:\n- Интересы: ${users[userId].hobby}\n- Район: ${users[userId].place}\n- Кафе: ${users[userId].cafe}\n- Время: ${users[userId].time}`);
-            
-            // Очистка состояния после завершения
-            delete userState[userId];
-     
-
-        // Подтверждение данных  
-        await ctx.reply(`Спасибо за регистрацию! Вот ваши данные:\n- Интересы: ${users[userId].hobby}\n- Район: ${users[userId].place}\n- Кафе: ${users[userId].cafe}\n- Время: ${users[userId].time}`);  
-
-        // Проверка на совпадения  
-        await findMatches(userId);  
-
-        // Очистка состояния после завершения  
-        delete userState[userId];  
-    } else {  
-        await ctx.reply("Я не знаю, как на это ответить. Пожалуйста, начните регистрацию с /register.");  
-    }  
-});  
-
+        // Очистка состояния после завершения
+        delete userState[userId];
+    } else {
+        await ctx.reply("Я не знаю, как на это ответить. Пожалуйста, начните регистрацию заново. /register");
+    }
+});
 // Функция для поиска совпадений  
 async function findMatches(userId: string) {  
     const user = users[userId];  
