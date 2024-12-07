@@ -52,14 +52,14 @@ bot.on("message", async (ctx) => {
     if (users[userId]?.hobby === '') {  
         await ctx.reply("О чём вы хотели бы поболжиться? Напишите свои интересы через запятую.");  
         userState[userId].hobby = ctx.message.text;  
-    } else if (userState[userId]?.place === '') { 
-        await ctx.reply("В каком районе вам было бы удобно встречаться?"); 
+        await ctx.reply("В каком районе вам было бы удобно встречаться?");  
+    } else if (userState[userId]?.place === '') {  
         userState[userId].place = ctx.message.text;  
-    } else if (userState[userId]?.cafe === '') {  
         await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");  
+    } else if (userState[userId]?.cafe === '') {  
         userState[userId].cafe = ctx.message.text;  
-    } else if (userState[userId]?.time === '') {  
         await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");  
+    } else if (userState[userId]?.time === '') {  
         userState[userId].time = ctx.message.text;  
 
         // Сохраняем информацию о пользователе  
