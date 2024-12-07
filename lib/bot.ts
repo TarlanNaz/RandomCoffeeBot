@@ -33,42 +33,41 @@ bot.command("start", (ctx) => {
 });  
 
 bot.command("register", (ctx) => {  
-    const userId = ctx.from.id.toString();  
-    userState[userId] = {  
-        hobby: '',  
-        place: '',  
-        cafe: '',  
-        time: '', 
-        meetNumber: 0,
-        grade: [], 
-    };  
-    ctx.reply("О чем бы вы хотели пообщаться? Напишите свои интересы через запятую.");  
-});  
-
-// Сбор информации от пользователя  
-bot.on("message", async (ctx) => {  
-    const userId = ctx.from.id.toString();  
-
-    if (users[userId]?.hobby === '') {  
-        await ctx.reply("О чём вы хотели бы поболжиться? Напишите свои интересы через запятую.");  
-        userState[userId].hobby = ctx.message.text;  
-        await ctx.reply("В каком районе вам было бы удобно встречаться?");  
-    } else if (userState[userId]?.place === '') {  
-        userState[userId].place = ctx.message.text;  
-        await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");  
-    } else if (userState[userId]?.cafe === '') {  
-        userState[userId].cafe = ctx.message.text;  
-        await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");  
-    } else if (userState[userId]?.time === '') {  
-        userState[userId].time = ctx.message.text;  
-
-        // Сохраняем информацию о пользователе  
-        users[userId] = {   
-            hobby: userState[userId].hobby,   
-            place: userState[userId].place,   
-            cafe: userState[userId].cafe,   
-            time: userState[userId].time   
-        };  
+    bot.on("message", async (ctx) => {
+        const userId = ctx.from.id.toString();
+        
+        // Инициализация userState, если она ещё не создана
+        if (!userState[userId]) {
+            userState[userId] = {};
+        }
+    
+        // Проверка и сохранение хобби
+        if (!userState[userId].hobby) {
+            userState[userId].hobby = ctx.message.text;
+            await ctx.reply("В каком районе вам было бы удобно встречаться?");
+        } else if (!userState[userId].place) {
+            userState[userId].place = ctx.message.text;
+            await ctx.reply("Какую кофейню вы предпочитаете? Напишите её название.");
+        } else if (!userState[userId].cafe) {
+            userState[userId].cafe = ctx.message.text;
+            await ctx.reply("Во сколько вам удобнее встречаться? Напишите время.");
+        } else if (!userState[userId].time) {
+            userState[userId].time = ctx.message.text;
+    
+            // Сохраняем информацию о пользователе
+            users[userId] = {
+                hobby: userState[userId].hobby,
+                place: userState[userId].place,
+                cafe: userState[userId].cafe,
+                time: userState[userId].time
+            };
+    
+            // Подтверждение данных
+            await ctx.reply(`Спасибо за регистрацию! Вот ваши данные:\n- Интересы: ${users[userId].hobby}\n- Район: ${users[userId].place}\n- Кафе: ${users[userId].cafe}\n- Время: ${users[userId].time}`);
+            
+            // Очистка состояния после завершения
+            delete userState[userId];
+     
 
         // Подтверждение данных  
         await ctx.reply(`Спасибо за регистрацию! Вот ваши данные:\n- Интересы: ${users[userId].hobby}\n- Район: ${users[userId].place}\n- Кафе: ${users[userId].cafe}\n- Время: ${users[userId].time}`);  
