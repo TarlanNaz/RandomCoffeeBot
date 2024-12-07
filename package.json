@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "cron": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/cron": "^2.0.1"
+  }
+}
